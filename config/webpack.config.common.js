@@ -118,6 +118,15 @@ module.exports = {
           parse: json5.parse,
         },
       },
+      {
+        test: /\.art$/i,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'art-template-loader'
+          }
+        ]
+      }
     ],
   },
   plugins: [
@@ -126,4 +135,21 @@ module.exports = {
       filename: '[name].[contenthash].css',
     }),
   ],
+  resolve: {
+    // alias: {
+    //   '@': path.resolve(__dirname, '../src'),
+    //        //或者这样写 '@': '/src' => webpack默认会将相对路径与上下文路径进行拼接 => 上下文路径默认就是node运行是的路径 => 对于我来说就是E:node\前端项目\src
+    // },
+    // extensions: ['.js', '.json', '.ts', '.tsx'], //告诉webpack你引入的文件要寻找哪些后缀的 => 简单来说就是你../index但没有说明是什么后缀的文件(你不设置这里的话好像只会找后缀为js的文件)。
+    fallback: {
+      // path: require.resolve('path-browserify'),
+      // "https": require.resolve("https-browserify"),
+      "os": false,
+      "https": false,
+      "path": false,
+      "http": false,
+      "url": false,
+      "fs": false,
+    },
+  }
 };
