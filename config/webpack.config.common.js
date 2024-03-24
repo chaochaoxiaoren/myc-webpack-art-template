@@ -1,4 +1,5 @@
 const path = require('path');
+const glob = require('glob')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -6,10 +7,46 @@ const toml = require('toml');
 const yaml = require('yamljs');
 const json5 = require('json5');
 
+const setMPA = () => {
+  const entry = {};
+  const htmlWebpackPlugins = [];
+  const entryFiles = glob.sync('src/views/*/index.js');
+  entryFiles.forEach((entryFile) => {
+    console.log(entryFile);
+    const file = entryFile.replaceAll('\\', '/')
+    const match = file.match(/src\/views\/(.*)\/index\.js/);
+    const pageName = match && match[1];
+    entry[pageName] = path.resolve(__dirname, `../${entryFile}`);
+    htmlWebpackPlugins.push(
+      new HtmlWebpackPlugin({
+        // inlineSource: '.css$',
+        template: path.join(__dirname, `../src/views/${pageName}/index.html`),
+        filename: `${pageName}.html`,
+        chunks: [pageName],
+        inject: true,
+        minify: {
+          html5: true,
+          collapseWhitespace: true,
+          preserveLineBreaks: false,
+          minifyCSS: true,
+          minifyJS: true,
+          removeComments: false
+        }
+      })
+    );
+  });
+  return {
+    entry,
+    htmlWebpackPlugins
+  }
+};
+
+const { entry, htmlWebpackPlugins } = setMPA();
+
 module.exports = {
-  entry: './src/index.js',
+  entry,
   output: {
-    filename: 'index.bundle.js',
+    filename: '[name].[contenthash].js',
     path: path.resolve(__dirname, '../dist'),
     clean: true
   },
@@ -84,14 +121,9 @@ module.exports = {
     ],
   },
   plugins: [
-    // 配置HtmlWebpackPlugin
-    new HtmlWebpackPlugin({
-      template: './public/index.html', // 模板文件
-      filename: 'index.html', // 生成文件名
-      inject: 'body', // 在哪个标签引入
-    }),
+    ...htmlWebpackPlugins,
     new MiniCssExtractPlugin({
-      filename: '[name].bundle.css',
+      filename: '[name].[contenthash].css',
     }),
   ],
 };

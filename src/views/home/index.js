@@ -1,9 +1,8 @@
 import axios from 'axios';
 import './index.css';
 import style from './index.module.css';
-import './iconfont/iconfont.css';
-import './iconfont/iconfont.js';
-import './assets.js'
+import '../../iconfont/iconfont.css';
+import '../../iconfont/iconfont.js';
 
 // 创建app元素
 const app = document.createElement('div');
@@ -20,7 +19,7 @@ icon.className='iconfont icon-mycpersonnel';
 document.body.appendChild(app);
 document.body.appendChild(ele);
 document.body.appendChild(icon);
-console.log('test');
+console.log('home');
 
 axios.get('/api/banner').then((res) => {
   console.log(res);
