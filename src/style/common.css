@@ -1,0 +1,11 @@
+@font-face {
+  font-family: 'HarmonyOS_Sans';
+  src:
+    url('../font/HarmonyOS_Sans_Bold.ttf') format('truetype'),
+    url('../font/HarmonyOS_Sans_Medium.ttf') format('truetype'),
+    url('../font/HarmonyOS_Sans_Regular.ttf') format('truetype');
+}
+body {
+  background-color: rebeccapurple;
+  font-family: HarmonyOS_Sans,Arial, Helvetica, sans-serif;
+}

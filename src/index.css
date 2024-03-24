@@ -1,0 +1,7 @@
+@import url('./style/common.css');
+
+.app {
+  height: 500px;
+  background-color: yellow;
+  transform: translateY(100px);
+}
